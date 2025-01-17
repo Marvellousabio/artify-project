@@ -1,0 +1,227 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+
+*{
+    margin: 0;
+    padding: 0;
+   
+}
+header{
+    background-color: #b6ffe7;
+    color: #000;
+    display: flex;
+    padding: 15px 15px 10px;
+    justify-content: space-between;
+    text-align: center;
+    box-shadow: #333;
+    }
+.logo{
+    padding-left: 115px;
+    font-size: 1.2rem;
+    font-weight: 50;
+    padding-top: 7px;
+    
+}
+
+nav{
+    display: flex;
+    gap: 4rem;
+    padding-top: 5px;
+    float: right;
+    
+}
+nav a{
+    text-decoration: none;
+    color: #154259;
+    display: inline-block;
+    font-size: 1.2rem;
+    font-weight: 200;
+}
+nav a:hover{color: #55b9d0;}
+.button-icons{
+    display: inline-flex ;
+    font-size: 1opx;
+    gap: 1rem;
+    padding: 10px;
+    background: none;
+    border: none;
+    cursor: pointer;
+
+}
+.menu-toggle{
+    display:none;
+    
+}
+.hero{
+    background-color: #fff;
+    line-clamp: 10px;
+    display: flex;
+    overflow: hidden;
+    padding-bottom: 30px;
+}
+.hero p{
+    padding: 50px 115px;
+    padding-top: 200px;
+    color: #208852;
+    font-size: 45px;
+    line-clamp: 10px;
+    word-wrap: 45px;
+}
+.hero img{
+    width: 400px;
+    padding-top: 0;
+   
+    float: right;
+}
+.sect a{float: right;
+    padding-right: 20px;
+}
+.content{
+    background-color: #fff;
+    padding: 20px;
+    line-height: 20px;
+    font-family: Arial, Helvetica, sans-serif;
+    }
+.content h4{
+    font-size: 20px;
+    text-transform: uppercase;
+}
+.content h3{
+    font-size: 30px;
+    text-align: center;
+    padding: 40px;
+}
+.content p{
+    font-size: 16px;
+    margin: 20px;
+}
+span{
+    background-color: #861515;
+    letter-spacing: 3px;
+}
+.box2{
+    background-color: transparent;
+    color: black;
+    padding: 20px;
+    text-align: center;
+}
+.box{
+    background-color: #208852;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+    justify-content: space-around;
+}
+.box h3{
+    padding-top: 10px;
+}
+.dropdown-menu{
+            display: none;
+            position: absolute;
+            right: 0;
+            min-width: 50px;
+            line-height: 20px;
+            padding-top: 0;
+            padding: 10px;
+            color: #fff;
+}
+footer{
+    display: none;
+    position: fixed;
+    background-color: #fff;
+    bottom: 0;
+    width: 100%;
+    overflow: hidden;
+}
+.dropdown-menu.active{
+    
+    display: flex;
+}
+.dropdown-menu a{
+    color: #fff;
+}
+
+@media (max-width:760px){
+    .large-screen{
+        display: none;
+    }
+    .menu-toggle{
+        display: block;
+        cursor: pointer;
+    }
+    .logo{padding-left: 0px;}
+    .hero{
+        overflow: hidden;
+        overflow-wrap: anywhere;
+    }
+    .hero img{
+        width: 180px;
+        height: 170px;
+        padding-left: 0px;
+    }
+    .hero p{
+        margin-top: 70px;
+    }
+    .show{
+        display: block;
+    }
+    .hero p{
+            padding: 15px 20px 20px 15px;
+            font-size: 20px;
+        }
+    
+        footer{
+            display:inline-flex;
+            overflow: hidden;
+           
+        }
+           
+        .bottom-nav{
+            padding: 2px;
+            overflow: hidden;
+            
+        }
+        .bottom-nav a{
+            width: auto;
+            overflow: hidden;
+            transition: 2s;
+           
+        }
+        .bottom-nav a:hover{
+            background-color: #208852;
+            opacity: 70%;
+            
+        }
+        .content h3{
+            font-size: 22px;
+        }
+        .dropdown-menu{
+            display: none;
+            flex-direction: column;
+            position: absolute;
+            margin-top: 60px;
+            background-color: #000;
+            color: #fff;
+        }
+        .active{
+            display: inline-block;
+        }
+@media (min-width :760px){
+    .menu-toggle{
+        display: none;
+    }
+    .small-screen{
+        display:none;
+    }
+    .content{
+        padding-left:115px;
+        font-size: 30px;
+        font-weight: 200;
+    }
+    footer .bottom-nav{
+        display: none;
+    }
+    .bottom-nav{
+        display: none;
+    }
+}

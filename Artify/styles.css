@@ -1,0 +1,152 @@
+
+        /* General Styles */
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            color: #333;
+        }
+
+        /* Header Styles */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            background: linear-gradient(90deg, #00c897, #009876);
+            color: #fff;
+        }
+.butt{
+    margin-top: 10px;
+    display:inline-flex;
+}
+button{
+    cursor: pointer;
+}
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            padding-left: 50px;
+        }
+
+        .nav {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .nav a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .menu-toggle {
+            display: none;
+            font-size: 1.5rem;
+            background: none;
+            border: none;
+            color: #fff;
+        }
+
+        /* Dropdown Menu Styles */
+        .dropdown-menu {
+            display: none;
+            flex-direction: column;
+            position: absolute;
+            top: 4rem;
+            left: 0;
+            right: 0;
+            background: #009876;
+            z-index: 1000;
+        }
+
+        .dropdown-menu a {
+            padding: 1rem;
+            border-bottom: 1px solid #00c897;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .dropdown-menu a:last-child {
+            border-bottom: none;
+        }
+
+        /* Hero Section Styles */
+        .hero {
+            text-align: center;
+            padding: 2rem;
+            background: #f4f4f4;
+        }
+
+        .hero h1 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero button {
+            background: #009876;
+            color: #fff;
+            padding: 0.5rem 1rem;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        /* Services Section Styles */
+        .services {
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .services h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Footer Styles */
+        .footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #00c897;
+            display: flex;
+            justify-content: space-around;
+            padding: 0.5rem 0;
+        }
+
+        .bottom-nav a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.2rem;
+        }
+
+        .bottom-nav img {
+            width: 24px;
+            height: 24px;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .large-screen {
+                display: none;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+
+            .small-screen .dropdown-menu {
+                display: none;
+                flex-direction: column;
+            }
+
+            .small-screen .dropdown-menu.show {
+                display: flex;
+            }
+        }
+
+        @media (min-width: 769px) {
+            .small-screen {
+                display: none;
+            }
+        }
+    
