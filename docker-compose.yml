@@ -1,0 +1,170 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: artify-postgres
+    environment:
+      POSTGRES_DB: artify
+      POSTGRES_USER: artify
+      POSTGRES_PASSWORD: artify_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - artify-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U artify -d artify"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    container_name: artify-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - artify-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Web Frontend
+  web:
+    build:
+      context: ./apps/web
+      dockerfile: Dockerfile
+    container_name: artify-web
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:4000
+      - NEXT_PUBLIC_COLLAB_WS_URL=ws://localhost:1234
+      - NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=${CLERK_PUBLISHABLE_KEY}
+    volumes:
+      - ./apps/web:/app
+      - /app/node_modules
+      - /app/.next
+    depends_on:
+      - api
+      - collab
+    networks:
+      - artify-network
+    develop:
+      watch:
+        - action: sync
+          path: ./apps/web
+          target: /app
+        - action: rebuild
+          path: ./apps/web/package.json
+
+  # API Backend
+  api:
+    build:
+      context: ./apps/api
+      dockerfile: Dockerfile
+    container_name: artify-api
+    ports:
+      - "4000:4000"
+    environment:
+      - DATABASE_URL=postgresql://artify:artify_password@postgres:5432/artify
+      - REDIS_URL=redis://redis:6379
+      - JWT_SECRET=${JWT_SECRET}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - AWS_BUCKET=${AWS_BUCKET}
+      - CLOUDFRONT_URL=${CLOUDFRONT_URL}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - PINECONE_API_KEY=${PINECONE_API_KEY}
+      - PINECONE_INDEX=${PINECONE_INDEX}
+    volumes:
+      - ./apps/api:/app
+      - /app/node_modules
+      - /app/dist
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - artify-network
+    develop:
+      watch:
+        - action: sync
+          path: ./apps/api
+          target: /app
+        - action: rebuild
+          path: ./apps/api/package.json
+
+  # AI Service
+  ai-service:
+    build:
+      context: ./apps/ai-service
+      dockerfile: Dockerfile
+    container_name: artify-ai-service
+    ports:
+      - "8000:8000"
+    environment:
+      - STABILITY_API_KEY=${STABILITY_API_KEY}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - PINECONE_API_KEY=${PINECONE_API_KEY}
+      - PINECONE_INDEX=${PINECONE_INDEX}
+      - REDIS_URL=redis://redis:6379
+    volumes:
+      - ./apps/ai-service:/app
+    depends_on:
+      - redis
+    networks:
+      - artify-network
+    develop:
+      watch:
+        - action: sync
+          path: ./apps/ai-service
+          target: /app
+        - action: rebuild
+          path: ./apps/ai-service/pyproject.toml
+
+  # Collaboration Server
+  collab:
+    build:
+      context: ./apps/collab
+      dockerfile: Dockerfile
+    container_name: artify-collab
+    ports:
+      - "1234:1234"
+    environment:
+      - DATABASE_URL=postgresql://artify:artify_password@postgres:5432/artify
+    volumes:
+      - ./apps/collab:/app
+      - /app/node_modules
+      - /app/dist
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - artify-network
+    develop:
+      watch:
+        - action: sync
+          path: ./apps/collab
+          target: /app
+        - action: rebuild
+          path: ./apps/collab/package.json
+
+volumes:
+  postgres_data:
+  redis_data:
+
+networks:
+  artify-network:
+    driver: bridge

@@ -1,0 +1,159 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  avatar    String?
+  clerkId   String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  teams         TeamMember[]
+  ownedTeams    Team[]       @relation("TeamOwner")
+  documents     Document[]
+  assets        Asset[]
+
+  @@map("users")
+}
+
+model Team {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String   @unique
+  description String?
+  avatar      String?
+  ownerId     String
+  owner       User     @relation("TeamOwner", fields: [ownerId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  members     TeamMember[]
+  documents   Document[]
+
+  @@map("teams")
+}
+
+model TeamMember {
+  id     String @id @default(cuid())
+  teamId String
+  userId String
+  role   Role  @default(MEMBER)
+
+  team Team @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([teamId, userId])
+  @@map("team_members")
+}
+
+enum Role {
+  OWNER
+  ADMIN
+  EDITOR
+  MEMBER
+  VIEWER
+}
+
+model Document {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  teamId      String?
+  ownerId     String
+  owner       User     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  team        Team?    @relation(fields: [teamId], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  snapshots   DocumentSnapshot[]
+  assets      Asset[]
+
+  @@map("documents")
+}
+
+model DocumentSnapshot {
+  id         String   @id @default(cuid())
+  documentId String
+  version    Int
+  data       Bytes    // Y.Doc binary snapshot
+  createdAt  DateTime @default(now())
+
+  document Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+
+  @@unique([documentId, version])
+  @@map("document_snapshots")
+}
+
+model DesignToken {
+  id          String  @id @default(cuid())
+  name        String
+  type        String  // 'color', 'spacing', 'typography', etc.
+  value       String
+  description String?
+  componentId String?
+
+  component ComponentLibrary? @relation(fields: [componentId], references: [id])
+
+  @@map("design_tokens")
+}
+
+model ComponentLibrary {
+  id          String   @id @default(cuid())
+  name        String
+  category    String
+  preview     String?  // URL to preview image
+  data        Json     // Component definition
+  isPublic    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  tokens DesignToken[]
+
+  @@map("component_library")
+}
+
+model Asset {
+  id        String   @id @default(cuid())
+  filename  String
+  mimeType  String
+  size      Int
+  url       String   // S3 URL
+  publicId  String?  // For CDN
+  userId    String
+  documentId String?
+  createdAt DateTime @default(now())
+
+  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  document Document? @relation(fields: [documentId], references: [id])
+
+  @@map("assets")
+}
+
+// Indexes for performance
+model DesignSearch {
+  id             String   @id @default(cuid())
+  documentId     String   @unique
+  embedding      Unsupported("vector(1536)")? // pgvector extension
+  style          String?
+  componentCount Int      @default(0)
+  prompt         String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@map("design_search")
+}

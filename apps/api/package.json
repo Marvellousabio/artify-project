@@ -1,0 +1,52 @@
+{
+  "name": "@artify/api",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "main": "dist/server.js",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsx watch src/server.ts",
+    "start": "node dist/server.js",
+    "lint": "eslint src --ext .ts",
+    "typecheck": "tsc --noEmit",
+    "docker:build": "docker build -t artify-api .",
+    "docker:push": "docker push artify-api"
+  },
+  "dependencies": {
+    "@artify/types": "workspace:*",
+    "@artify/constraints": "workspace:*",
+    "@prisma/client": "^5.7.0",
+    "express": "^4.21.2",
+    "cors": "^2.8.5",
+    "helmet": "^8.1.0",
+    "morgan": "^1.10.0",
+    "zod": "^3.24.4",
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^9.0.0",
+    "@aws-sdk/client-s3": "^3.490.0",
+    "@aws-sdk/cloudfront-signer": "^3.490.0",
+    "multer": "^1.4.4",
+    "multer-s3": "^3.0.1",
+    "redis": "^4.6.0",
+    "ioredis": "^5.6.1",
+    "compression": "^1.8.0",
+    "express-rate-limit": "^7.5.0",
+    "dotenv": "^16.4.7",
+    "prettier": "^3.0.0"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.2",
+    "@types/cors": "^2.8.17",
+    "@types/morgan": "^1.9.9",
+    "@types/bcryptjs": "^2.4.6",
+    "@types/jsonwebtoken": "^9.0.5",
+    "@types/multer": "^1.4.12",
+    "@types/compression": "^1.7.5",
+    "@types/node": "^22.15.21",
+    "tsx": "^4.19.4",
+    "typescript": "^5.8.3",
+    "eslint": "^9.27.0",
+    "prisma": "^5.7.0"
+  }
+}

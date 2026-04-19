@@ -1,0 +1,27 @@
+{
+  "name": "@artify/imagegen",
+  "version": "1.0.0",
+  "description": "ArtifyPro Image Generation Service - FastAPI + Stability AI / Replicate",
+  "type": "module",
+  "main": "src/main.py",
+  "scripts": {
+    "dev": "uvicorn src.main:app --reload --port 3002",
+    "start": "uvicorn src.main:app --host 0.0.0.0 --port 3002"
+  },
+  "dependencies": {
+    "fastapi": "^0.115.8",
+    "uvicorn[standard]": "^0.34.3",
+    "pydantic": "^2.10.6",
+    "boto3": "^1.38.0",
+    "redis": "^5.2.1",
+    "httpx": "^0.28.1",
+    "python-dotenv": "^1.0.1",
+    "pillow": "^11.1.0",
+    "aioredis": "^2.0.1"
+  },
+  "devDependencies": {
+    "pytest": "^8.3.5",
+    "black": "^25.1.0",
+    "isort": "^6.0.1"
+  }
+}

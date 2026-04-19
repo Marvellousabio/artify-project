@@ -1,0 +1,33 @@
+{
+  "name": "@artify/collab",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "main": "dist/server.js",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsx watch src/server.ts",
+    "start": "node dist/server.js",
+    "lint": "eslint src --ext .ts",
+    "typecheck": "tsc --noEmit",
+    "docker:build": "docker build -t artify-collab .",
+    "docker:push": "docker push artify-collab"
+  },
+  "dependencies": {
+    "@artify/types": "workspace:*",
+    "yjs": "^13.6.0",
+    "y-websocket": "^1.5.0",
+    "y-protocols": "^1.0.6",
+    "ws": "^8.14.0",
+    "@prisma/client": "^5.7.0",
+    "dotenv": "^16.4.7"
+  },
+  "devDependencies": {
+    "@types/ws": "^8.5.0",
+    "@types/node": "^22.15.21",
+    "tsx": "^4.19.4",
+    "typescript": "^5.8.3",
+    "eslint": "^9.27.0",
+    "prisma": "^5.7.0"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "name": "artifypro-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
+    "test": "turbo run test",
+    "typecheck": "turbo run typecheck",
+    "clean": "turbo run clean",
+    "docker:build": "turbo run docker:build",
+    "docker:push": "turbo run docker:push"
+  },
+  "devDependencies": {
+    "turbo": "^2.5.2"
+  },
+  "packageManager": "npm@10.2.0"
+}

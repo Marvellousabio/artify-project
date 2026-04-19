@@ -1,0 +1,15 @@
+{
+  "name": "@artify/types",
+  "version": "1.0.0",
+  "description": "Shared TypeScript types for ArtifyPro",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.3"
+  }
+}
